@@ -69,7 +69,7 @@ export function startSession(
     pod.sessionStartedBy = startedBy;
 
     pod.SessionStart = new Date();
-    pod.SessionEnd = new Date(pod.SessionStart.getTime() +  60 * 1000); // 2 hours now 60 seconds
+    pod.SessionEnd = new Date(pod.SessionStart.getTime() +  120 * 1000); // 2 hours now 120 seconds
     
     pod.ReservationExpiry = null;
     pod.motionStart = null;
