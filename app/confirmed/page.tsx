@@ -68,13 +68,11 @@ export default function UsingPodPage() {
         return;
       }
 
-      // If session is no longer active, leave this page
       if (data.status === "Available") {
         router.push("/expire");
         return;
       }
 
-      // If somehow user ends up here while not occupied, send them away
       if (data.status !== "Occupied") {
         router.push("/expire");
         return;
@@ -102,7 +100,7 @@ export default function UsingPodPage() {
     }
   }
 
-  // Fetch immediately + poll every 5 seconds
+  // Poll backend
   useEffect(() => {
     fetchPod();
 
@@ -113,7 +111,7 @@ export default function UsingPodPage() {
     return () => clearInterval(refreshInterval);
   }, []);
 
-  // Local countdown every second for smooth display
+  // Smooth countdown
   useEffect(() => {
     if (secondsLeft <= 0) return;
 
@@ -150,7 +148,7 @@ export default function UsingPodPage() {
         </h1>
       </div>
 
-      {/* zoom function */}
+      {/* map */}
       <div className="relative w-full max-w-lg border border-gray-300 rounded-3xl overflow-hidden shadow-lg mb-8 bg-gray-50 aspect-[4/3]">
         <QuickPinchZoom
           ref={pinchRef}
@@ -169,46 +167,31 @@ export default function UsingPodPage() {
               />
             </div>
 
-            {/* using pod color */}
+            {/* active pod */}
             <div
               className="absolute w-6 h-6 bg-[#007BFF] rounded-lg border-4 border-white shadow-xl scale-110 z-10"
               style={{ top: "55.5%", left: "48.3%" }}
-            />
-
-            {/* other pod */}
-            <div
-              className="absolute w-6 h-6 bg-[#DEDEDE] rounded-lg border-2 border-white/50 shadow-sm opacity-50"
-              style={{ top: "55.5%", left: "41.2%" }}
-            />
-            <div
-              className="absolute w-6 h-6 bg-[#DEDEDE] rounded-lg border-2 border-white/50 shadow-sm opacity-50"
-              style={{ top: "70.5%", left: "60.8%" }}
-            />
-            <div
-              className="absolute w-6 h-6 bg-[#DEDEDE] rounded-lg border-2 border-white/50 shadow-sm opacity-50"
-              style={{ top: "60.3%", left: "60.8%" }}
             />
           </div>
         </QuickPinchZoom>
       </div>
 
-      {/* timer section */}
-      <div className="w-full max-w-sm flex flex-col gap-4 mb-8">
-        {/* blue */}
+      {/* status + timer */}
+      <div className="w-full max-w-sm flex flex-col gap-4 mb-6">
         <div className="w-full bg-[#E0F2FE] text-[#007BFF] py-4 px-6 rounded-xl flex items-center justify-center gap-3 border border-[#BAE6FD]">
           <div className="w-4 h-4 bg-[#007BFF] rounded-full" />
-          <span className="font-bold text-lg">Pod is Active</span>
+          <span className="font-bold text-lg">Session in Progress</span>
         </div>
 
-        {/* timer box */}
         <div className="w-full bg-[#F9D9A5] rounded-xl p-6 shadow-sm text-center">
-          <p className="text-[#4A4A4A] text-xl font-medium mb-1">Time left:</p>
+          <p className="text-[#4A4A4A] text-xl font-medium mb-1">
+            Session ends in:
+          </p>
           <p className="text-[#000000] text-5xl font-extrabold italic min-h-[60px]">
             {loading ? "--:--:--" : formatTime(secondsLeft)}
           </p>
         </div>
 
-        {/* optional access code display */}
         <div className="w-full bg-white border border-gray-200 rounded-xl p-4 shadow-sm text-center">
           <p className="text-sm text-gray-500 mb-1">Access Code</p>
           <p className="text-3xl font-black tracking-tight text-black">
@@ -217,28 +200,38 @@ export default function UsingPodPage() {
         </div>
       </div>
 
-      {/* QR image */}
-      <div className="w-full max-w-xs flex flex-col items-center gap-3 mb-12 p-6 bg-gray-50 rounded-2xl border border-gray-200 shadow-inner">
-        <p className="text-gray-600 font-semibold text-sm">
-          Scan to extend or end session:
+      {/* instructions */}
+      <div className="w-full max-w-sm bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-inner text-center mb-6">
+        <p className="text-gray-700 font-semibold text-sm leading-snug">
+          Start or end your session by pressing the button inside the pod
         </p>
-        <Image
-          src="/QR.png"
-          alt="Session QR Code"
-          width={150}
-          height={150}
-          className="object-contain rounded-lg shadow-md"
-        />
+
+        <div className="text-[10px] text-gray-500 leading-relaxed mt-2">
+          <p>The pod automatically detects presence.</p>
+          <p>
+            A <span className="font-semibold text-[#007BFF]">blue light</span>{" "}
+            indicates an active session.
+          </p>
+          <p>If no light is visible, press the button to begin.</p>
+        </div>
       </div>
 
-      {/* Return button */}
+      {/* usage tip */}
+      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-xl p-4 shadow-sm text-center mb-8">
+        <p className="text-[11px] text-gray-500 leading-relaxed">
+          Please take your belongings with you when leaving the pod. The pod will
+          automatically reset after your session ends.
+        </p>
+      </div>
+
+      {/* back button */}
       <Link href="/pick">
         <button className="bg-[#C8D3D5] text-[#4A4A4A] font-bold py-3 px-12 rounded-xl shadow-md mb-12 hover:bg-[#b8c5c7] transition-colors">
           Back to main map
         </button>
       </Link>
 
-      {/* logo image */}
+      {/* logo */}
       <footer className="mt-auto pt-10 pb-6 text-center">
         <Image
           src="/logo.png"
@@ -246,7 +239,6 @@ export default function UsingPodPage() {
           width={110}
           height={70}
           className="object-contain inline-block"
-          style={{ width: "auto", height: "auto" }}
         />
       </footer>
     </main>
