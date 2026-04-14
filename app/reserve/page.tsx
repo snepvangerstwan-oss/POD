@@ -69,26 +69,37 @@ export default function AccessCodePage() {
   }
 
   async function cancelReservation() {
-    try {
-      const res = await fetch("/api/hardware", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          podId: "pod-1",
-          event: "cancel_reservation",
-        }),
-      });
+  try {
+    console.log("Cancelling reservation...");
 
-      const data = await res.json();
-      console.log("Cancel reservation response:", data);
+    const res = await fetch("/api/hardware", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        podId: "pod-1",
+        event: "cancel_reservation",
+      }),
+    });
 
-      router.push("/expire");
-    } catch (error) {
-      console.error("Failed to cancel reservation:", error);
+    if (!res.ok) {
+      console.error("Cancel failed with status:", res.status);
+      return;
     }
+
+    const data = await res.json();
+    console.log("Cancel reservation response:", data);
+
+    if (data.status === "Available") {
+      router.push("/cancel");
+    } else {
+      console.warn("Reservation was not cancelled properly:", data);
+    }
+  } catch (error) {
+    console.error("Failed to cancel reservation:", error);
   }
+}
 
   useEffect(() => {
     fetchPod();
