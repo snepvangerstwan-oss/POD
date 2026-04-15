@@ -48,6 +48,10 @@ export default function InfoPage() {
         </div>
       </div>
 
+       <div className="w-full max-w-sm bg-[#F9D9A5] text-[#4A4A4A] text-[13px] font-bold py-3 px-4 rounded-xl text-center shadow-sm">
+        Please keep in mind that if you leave the pod for more than 15 minutes the pod will automatically reset and you will not be able to enter anymore.
+      </div>
+
       {/* logo image */}
       <footer className="mt-auto pt-10 pb-6">
         <Image 
