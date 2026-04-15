@@ -63,11 +63,10 @@ export default function PickPage() {
   }
 
   function getPodHref() {
-  if (!pod) return "#";
-
-  if (pod.status === "Available") return "/green";
-  return "/red";
-}
+    if (!pod) return "#";
+    if (pod.status === "Available") return "/green";
+    return "/red";
+  }
 
   function getStatusText() {
     if (loading) return "Loading pod status...";
@@ -83,13 +82,15 @@ export default function PickPage() {
 
   return (
     <main className="min-h-screen bg-white flex flex-col items-center py-10 px-4">
+      {/* Header */}
       <div className="bg-[#F9D9A5] px-20 py-4 rounded-xl mb-8 shadow-sm">
         <h1 className="text-4xl text-[#4A4A4A] italic font-serif font-bold">
           Pick a Pod
         </h1>
       </div>
 
-      <div className="w-full max-w-2xl border border-gray-300 rounded-3xl overflow-hidden shadow-lg mb-4 bg-gray-50">
+      {/* Zoomable Map Box */}
+      <div className="w-full max-w-2xl border border-gray-300 rounded-3xl overflow-hidden shadow-lg mb-4 bg-gray-50 aspect-[4/3]">
         <QuickPinchZoom
           onUpdate={onUpdate}
           wheelScaleFactor={500}
@@ -101,33 +102,34 @@ export default function PickPage() {
               alt="Main Map"
               width={800}
               height={600}
+              layout="responsive"
               className="object-contain pointer-events-none"
               priority
             />
      
-            {/* one real pod only */}
+            {/* Real Hardware-linked Pod Button */}
             <Link
               href={getPodHref()}
-              className={`absolute w-4 h-4 rounded-full border-2 border-white shadow-md z-20 hover:scale-150 transition-transform cursor-pointer active:scale-110 ${getPodColor()}`}
+              className={`absolute w-5 h-5 rounded-full border-2 border-white shadow-md z-20 hover:scale-150 transition-transform cursor-pointer active:scale-110 ${getPodColor()}`}
               style={{ top: "55.5%", left: "51.3%" }}
-              aria-label="Go to Pod Calm"
             >
-              <span className="sr-only">Go to Pod Calm</span>
+              <span className="sr-only">Go to Pod</span>
             </Link>
           </div>
         </QuickPinchZoom>
       </div>
 
-      <p className="text-gray-600 font-medium mb-6 text-center">
+      <p className="text-gray-600 font-medium mb-4 text-center px-4">
         Use mouse wheel or pinch to zoom. Click on the pod.
       </p>
 
-      <div className="mb-10 text-center">
+      {/* Real-time Status Text */}
+      <div className="mb-10 text-center bg-gray-50 px-8 py-2 rounded-full border border-gray-200 shadow-inner">
         <p className="text-[#00334E] font-bold text-xl">{getStatusText()}</p>
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-col gap-6 w-full max-w-xs items-start pl-10">
+      {/*  Legend Section */}
+      <div className="flex flex-col gap-6 w-full max-w-xs items-start pl-10 mb-12">
         <div className="flex items-center gap-4">
           <div className="w-10 h-6 bg-[#32CD32] rounded-md border border-black/20 shadow-inner"></div>
           <span className="text-[#00334E] font-bold text-xl">= Available</span>
@@ -144,13 +146,23 @@ export default function PickPage() {
         </div>
       </div>
 
-      <footer className="mt-auto pt-10 pb-6">
+      {/* Go to main Button */}
+      <div className="mb-10">
+        <Link href="/">
+          <button className="bg-[#C8D3D5] text-[#4A4A4A] font-bold py-3 px-12 rounded-xl shadow-md hover:bg-[#b8c5c7] transition-all active:scale-95">
+            Go to main
+          </button>
+        </Link>
+      </div>
+
+      {/* Footer Logo */}
+      <footer className="mt-auto pt-10 pb-6 text-center">
         <Image
           src="/logo.png"
           alt="Parent Pod Logo"
           width={110}
           height={70}
-          className="object-contain"
+          className="object-contain inline-block"
           style={{ width: "auto", height: "auto" }}
         />
       </footer>
