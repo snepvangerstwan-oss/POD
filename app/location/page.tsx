@@ -26,7 +26,7 @@ export default function LocationPage() {
       {/* Pod Picture */}
       <div className="relative w-full max-w-md border-4 border-dashed border-gray-300 rounded-3xl overflow-hidden mb-8 bg-gray-50 aspect-square flex items-center justify-center">
         <Image 
-          src="/pod.png"
+          src="app/public/pod.png"
           alt="Pod Picture" 
           width={500} 
           height={500} 
