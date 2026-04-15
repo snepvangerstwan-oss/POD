@@ -1,6 +1,7 @@
 'use client';
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ReservationCancelledPage() {
   return (
@@ -51,14 +52,18 @@ export default function ReservationCancelledPage() {
           No worries, you can book again anytime!
         </p>
 
-        {/* button */}
+  {/* button */}
         <div className="w-full flex flex-col gap-2 mt-2">
-          <button className="w-full bg-[#FFB347] text-black font-bold py-3 rounded-xl text-sm shadow-md hover:bg-[#ffa526] transition-colors">
-            Go to Home Page
-          </button>
-          <button className="w-full bg-[#F9D9A5] text-[#4A4A4A] font-bold py-3 rounded-xl text-sm shadow-sm hover:bg-[#e7c997] transition-colors">
-            Select Another Pod
-          </button>
+          <Link href="/page.tsx">
+            <button className="w-full bg-[#FFB347] text-black font-bold py-3 rounded-xl text-sm shadow-md hover:bg-[#ffa526] transition-colors">
+              Go to Home Page
+            </button>
+          </Link>
+          <Link href="/pick">
+            <button className="w-full bg-[#F9D9A5] text-[#4A4A4A] font-bold py-3 rounded-xl text-sm shadow-sm hover:bg-[#e7c997] transition-colors">
+              Select Another Pod
+            </button>
+          </Link>
         </div>
       </div>
 
