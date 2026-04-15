@@ -31,12 +31,8 @@ export default function PickPage() {
 
   async function fetchPod() {
     try {
-      const res = await fetch("/api/hardware", {
-        cache: "no-store",
-      });
-
+      const res = await fetch("/api/hardware", { cache: "no-store" });
       const data = await res.json();
-      console.log("Fetched pod for map:", data);
       setPod(data);
     } catch (error) {
       console.error("Failed to fetch pod:", error);
@@ -47,11 +43,7 @@ export default function PickPage() {
 
   useEffect(() => {
     fetchPod();
-
-    const interval = setInterval(() => {
-      fetchPod();
-    }, 5000);
-
+    const interval = setInterval(fetchPod, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -71,12 +63,10 @@ export default function PickPage() {
   function getStatusText() {
     if (loading) return "Loading pod status...";
     if (!pod) return "Pod status unavailable";
-
     if (pod.status === "Available") return "Vacant";
     if (pod.status === "Reserved") return `Reserved • ${pod.minutesRemaining} min left`;
     if (pod.status === "Occupied") return `Occupied • ${pod.minutesRemaining} min left`;
     if (pod.status === "Leaving") return `Leaving • ${pod.minutesRemaining} min left`;
-
     return pod.status;
   }
 
@@ -90,7 +80,19 @@ export default function PickPage() {
       </div>
 
       {/* Zoomable Map Box */}
-      <div className="w-full max-w-2xl border border-gray-300 rounded-3xl overflow-hidden shadow-lg mb-4 bg-gray-50 aspect-[4/3]">
+      <div className="relative w-full max-w-2xl border border-gray-300 rounded-3xl overflow-hidden shadow-lg mb-4 bg-gray-50 aspect-[4/3]">
+        
+        {/*  Location button  */}
+        <Link href="/location">
+          <button 
+            className="absolute top-4 left-4 z-30 bg-[#F9D9A5] border border-[#eecb92] px-4 py-2 rounded-xl shadow-md 
+                       text-[#4A4A4A] text-xs font-bold uppercase tracking-wider
+                       hover:bg-[#eecb92] transition-all active:scale-95 cursor-pointer"
+          >
+            Location
+          </button>
+        </Link>
+
         <QuickPinchZoom
           onUpdate={onUpdate}
           wheelScaleFactor={500}
@@ -128,18 +130,16 @@ export default function PickPage() {
         <p className="text-[#00334E] font-bold text-xl">{getStatusText()}</p>
       </div>
 
-      {/*  Legend Section */}
+      {/* Legend Section */}
       <div className="flex flex-col gap-6 w-full max-w-xs items-start pl-10 mb-12">
         <div className="flex items-center gap-4">
           <div className="w-10 h-6 bg-[#32CD32] rounded-md border border-black/20 shadow-inner"></div>
           <span className="text-[#00334E] font-bold text-xl">= Available</span>
         </div>
-
         <div className="flex items-center gap-4">
           <div className="w-10 h-6 bg-yellow-400 rounded-md border border-black/20 shadow-inner"></div>
           <span className="text-[#00334E] font-bold text-xl">= Reserved</span>
         </div>
-
         <div className="flex items-center gap-4">
           <div className="w-10 h-6 bg-[#FF4D4D] rounded-md border border-black/20 shadow-inner"></div>
           <span className="text-[#00334E] font-bold text-xl">= Occupied</span>
@@ -157,14 +157,7 @@ export default function PickPage() {
 
       {/* Footer Logo */}
       <footer className="mt-auto pt-10 pb-6 text-center">
-        <Image
-          src="/logo.png"
-          alt="Parent Pod Logo"
-          width={110}
-          height={70}
-          className="object-contain inline-block"
-          style={{ width: "auto", height: "auto" }}
-        />
+        <Image src="/logo.png" alt="Parent Pod Logo" width={110} height={70} className="object-contain inline-block" />
       </footer>
     </main>
   );
