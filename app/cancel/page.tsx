@@ -14,15 +14,6 @@ export default function ReservationCancelledPage() {
         </h1>
       </div>
 
-      {/* smallmap image */}
-      <div className="relative w-full max-w-lg h-64 border border-gray-300 rounded-[2rem] overflow-hidden shadow-lg mb-4 opacity-50 grayscale">
-        <Image 
-          src="/small_map.png" 
-          alt="Small Map" 
-          fill
-          className="object-cover object-top" 
-        />
-      </div>
 
       {/* cancel info */}
       <div className="relative w-full max-w-sm bg-white border border-gray-100 rounded-[2.5rem] p-6 shadow-2xl flex flex-col items-center gap-3 mb-6">
