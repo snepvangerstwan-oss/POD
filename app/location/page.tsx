@@ -1,10 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function LocationPage() {
+  const [showRoute, setShowRoute] = useState(false);
+
   const steps = [
     "Go straight ahead, then turn right and take the stairs up ",
     "At the top, continue straight toward the windows on the right",
@@ -14,14 +16,14 @@ export default function LocationPage() {
   return (
     <main className="min-h-screen bg-white flex flex-col items-center py-10 px-4">
       
-      {/* Header: Pod Name  */}
+      {/* Header: Pod Name */}
       <div className="bg-[#F9D9A5] px-16 py-4 rounded-xl mb-8 shadow-sm text-center">
         <h1 className="text-4xl text-[#4A4A4A] italic font-serif font-bold whitespace-nowrap">
           Pod Calm
         </h1>
       </div>
 
-      {/* Pod Picture  */}
+      {/* Pod Picture */}
       <div className="relative w-full max-w-md border-4 border-dashed border-gray-300 rounded-3xl overflow-hidden mb-8 bg-gray-50 aspect-square flex items-center justify-center">
         <Image 
           src="/pod.png"
@@ -53,7 +55,31 @@ export default function LocationPage() {
         </div>
       </div>
 
-      {/*  Back to map button */}
+      {/* Route Image  */}
+      {showRoute && (
+        <div className="w-full max-w-md mb-6 animate-in fade-in zoom-in duration-300">
+          <div className="relative border-4 border-[#F9D9A5] rounded-3xl overflow-hidden shadow-lg">
+            <Image 
+              src="/route.png" 
+              alt="Route Map" 
+              width={800} 
+              height={600} 
+              layout="responsive"
+              className="object-contain"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Route Button */}
+      <button 
+        onClick={() => setShowRoute(!showRoute)}
+        className="bg-[#F9D9A5] text-[#4A4A4A] font-bold py-3 px-16 rounded-xl shadow-md mb-4 hover:bg-[#eecb92] transition-all active:scale-95"
+      >
+        {showRoute ? "Hide Route" : "Route"}
+      </button>
+
+      {/* Back to map button */}
       <Link href="/pick">
         <button className="bg-[#C8D3D5] text-[#4A4A4A] font-bold py-3 px-12 rounded-xl shadow-md mb-12 hover:bg-[#b8c5c7] transition-all active:scale-95">
           Back to map
