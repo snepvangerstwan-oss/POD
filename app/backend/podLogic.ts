@@ -69,7 +69,7 @@ export function startSession(
     pod.sessionStartedBy = startedBy;
 
     pod.SessionStart = new Date();
-    pod.SessionEnd = new Date(pod.SessionStart.getTime() +  120 * 1000); // 2 hours now 120 seconds
+    pod.SessionEnd = new Date(pod.SessionStart.getTime() +  60 * 1000); // 2 hours now 60 seconds
     
     pod.ReservationExpiry = null;
     pod.motionStart = null;
@@ -89,7 +89,7 @@ export function endSession(id: string) {
     pod.ledLights = "Yellow";
     pod.blueLedOn = false;
 
-    pod.LeavingPodEnd = new Date(Date.now() + 5 * 1000); // 5 seconds
+    pod.LeavingPodEnd = new Date(Date.now() + 15 * 1000); // 15 seconds
     pod.SessionEnd = null;
     pod.GracePeriod = null;
     pod.motionStart = null;
