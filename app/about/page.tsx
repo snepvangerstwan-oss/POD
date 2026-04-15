@@ -22,7 +22,7 @@ export default function AboutPage() {
             Parent Pod is a dedicated space designed for parents who need a quiet, comfortable, and private environment while they're out and about.
           </p>
           <p>
-            Whether you need to nurse, change a diaper, calm a fussy baby, or simply take a break, our pods provide a safe and welcoming space for you and your little one.
+            Designed to offer comfort and privacy, our pods provide a quiet space to pause, recharge, and take a moment away from the hospital environment.
           </p>
 
           <div>
