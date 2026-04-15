@@ -55,6 +55,10 @@ export function getFrontendPod(podId: string) {
     minutesRemaining,
     blueLedOn: pod.blueLedOn,
     sessionStartedBy: pod.sessionStartedBy,
+    
+    // NIEUW: Stuur de sensor-statussen mee naar de frontend!
+    PresenceDetected: pod.PresenceDetected,
+    ButtonPressed: pod.ButtonPressed,
   };
 }
 
