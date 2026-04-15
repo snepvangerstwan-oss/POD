@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AccessCodeExpiredPage() {
-
   return (
     <main className="min-h-screen bg-white flex flex-col items-center py-4 px-4 overflow-hidden">
       
-      {/* pod name  */}
+      {/* pod name */}
       <div className="bg-[#F9D9A5] px-12 py-3 rounded-xl mb-4 shadow-sm text-center">
         <h1 className="text-3xl text-[#4A4A4A] italic font-serif font-bold whitespace-nowrap">
           Pod Calm
@@ -60,7 +60,6 @@ export default function AccessCodeExpiredPage() {
           Expired
         </div>
 
-
         {/* info */}
         <div className="w-full flex flex-col items-center gap-2">
           <div className="py-2">
@@ -74,11 +73,12 @@ export default function AccessCodeExpiredPage() {
         </div>
       </div>
 
-      {/* rebook info */}
-      <div className="w-full max-w-sm bg-[#F9D9A5] text-[#4A4A4A] text-[10px] font-bold py-3 px-4 rounded-xl text-center shadow-sm">
-        Please go back to rebook your session
-      </div>
-
+      {/* Rebook Button -> go to pick*/}
+      <Link href="/pick" className="w-full max-w-sm">
+        <button className="w-full bg-[#F9D9A5] text-[#4A4A4A] text-[12px] font-bold py-4 px-4 rounded-xl text-center shadow-md hover:bg-[#eecb92] transition-colors active:scale-95">
+          Please click here to rebook your session
+        </button>
+      </Link>
     </main>
   );
 }
