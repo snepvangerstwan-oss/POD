@@ -25,7 +25,7 @@ export function reservePod(id: string, accessCode: string) {
     pod.blueLedOn = false;
 
     pod.accessCode = accessCode;
-    pod.ReservationExpiry = new Date(Date.now() + 30 * 1000);
+    pod.ReservationExpiry = new Date(Date.now() + 5* 60 * 1000); //5 minutes
 
     // clear all old session / temporary state
     pod.sessionStartedBy = null;
