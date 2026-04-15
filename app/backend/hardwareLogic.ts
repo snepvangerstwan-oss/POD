@@ -154,7 +154,7 @@ export function ifMotionTimerEnds(podId: string): void {
     pod.status === "Reserved" &&
     pod.PresenceDetected &&
     pod.motionStart &&
-    Date.now() >= pod.motionStart.getTime() + 6 * 1000 //6 seconds 
+    Date.now() >= pod.motionStart.getTime() + 15 * 1000 //15 seconds 
   ) {
     startSession(podId, "Presence");
     pod.motionStart = null;
