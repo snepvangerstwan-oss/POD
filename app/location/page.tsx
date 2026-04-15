@@ -60,7 +60,7 @@ export default function LocationPage() {
         <div className="w-full max-w-md mb-6 animate-in fade-in zoom-in duration-300">
           <div className="relative border-4 border-[#F9D9A5] rounded-3xl overflow-hidden shadow-lg">
             <Image 
-              src="/route.png" 
+              src="app/public/route.png" 
               alt="Route Map" 
               width={800} 
               height={600} 
