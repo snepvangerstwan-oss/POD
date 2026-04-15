@@ -1,47 +1,48 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-
-type PodData = {
-  id: string;
-  name: string;
-  status: string;
-  ledLights: string;
-  accessCode: string | null;
-  ReservationExpiry: string | null;
-  SessionEnd: string | null;
-  LeavingPodEnd: string | null;
-  GracePeriod: string | null;
-  minutesRemaining: number;
-  blueLedOn: boolean;
-  sessionStartedBy: "button" | "presence" | "app" | null;
-};
+import { useState, useEffect } from 'react';
 
 export default function DemoDashboard() {
-  const [pod, setPod] = useState<PodData | null>(null);
-  const [eventLogs, setEventLogs] = useState<{ time: string; message: string }[]>([]);
+  const [pod, setPod] = useState<any>(null);
+  const [eventLogs, setEventLogs] = useState<{time: string, message: string}[]>([]);
 
   useEffect(() => {
     const fetchPodData = async () => {
       try {
-        const res = await fetch("/api/hardware", {
-          cache: "no-store",
-        });
-
+        const res = await fetch('/api/hardware');
         if (!res.ok) return;
+        const data = await res.json();
 
-        const data: PodData = await res.json();
+        setPod((prevPod: any) => {
+          // If this is the initial load, just set the data without logging
+          if (!prevPod) return data;
 
-        setPod((prevPod) => {
-          // Check of de status is veranderd ten opzichte van de vorige seconde
-          if (!prevPod || prevPod.status !== data.status) {
-            const timeStr = new Date().toLocaleTimeString();
-            const logMessage = `Status gewijzigd naar: ${data.status.toUpperCase()}`;
+          let newLogs: {time: string, message: string}[] = [];
+          const timeStr = new Date().toLocaleTimeString();
 
-            // Voeg de nieuwe actie toe aan de bovenkant van het logboek
-            setEventLogs((prevLogs) =>
-              [{ time: timeStr, message: logMessage }, ...prevLogs].slice(0, 10)
-            );
+          // 1. Check if the main Pod status changed
+          if (prevPod.status !== data.status) {
+            newLogs.push({ time: timeStr, message: `Status gewijzigd naar: ${data.status.toUpperCase()}` });
+          }
+
+          // 2. Check if the Radar (Presence) state changed
+          if (prevPod.PresenceDetected !== data.PresenceDetected) {
+            if (data.PresenceDetected) {
+              newLogs.push({ time: timeStr, message: `Radar: Persoon gedetecteerd! 🟢` });
+            } else {
+              newLogs.push({ time: timeStr, message: `Radar: Niemand meer in beeld ⚪` });
+            }
+          }
+
+          // 3. Check if the physical button was pressed
+          if (prevPod.ButtonPressed !== data.ButtonPressed && data.ButtonPressed) {
+            newLogs.push({ time: timeStr, message: `Knop: Fysieke knop ingedrukt! 🔘` });
+          }
+
+          // If any changes occurred, append them to the top of our log list
+          if (newLogs.length > 0) {
+            // Add new logs to the top, and keep the latest 15 entries
+            setEventLogs((prevLogs: any) => [...newLogs, ...prevLogs].slice(0, 15));
           }
 
           return data;
@@ -51,85 +52,49 @@ export default function DemoDashboard() {
       }
     };
 
-    // Haal direct op bij laden...
     fetchPodData();
-
-    // ...en herhaal dit daarna elke 1 seconde!
     const interval = setInterval(fetchPodData, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
-  if (!pod)
-    return (
-      <div className="p-10 text-xl font-bold">
-        Verbinden met Vercel Server...
-      </div>
-    );
+  if (!pod) return <div className="p-10 text-xl font-bold">Verbinden met Server...</div>;
 
-  // Bepaal de kleur voor het dashboard op basis van de status
+  // Determine dashboard background color based on status
   let bgColor = "bg-green-500";
   if (pod.status === "Reserved" || pod.status === "Leaving") bgColor = "bg-yellow-400";
   if (pod.status === "Occupied") bgColor = "bg-red-500";
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 font-sans">
-      <h1 className="text-4xl font-extrabold mb-8 text-gray-800">
-        📡 Live Demo Dashboard
-      </h1>
-
+      <h1 className="text-4xl font-extrabold mb-8 text-gray-800">📡 Live Demo Dashboard</h1>
+      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
-        {/* LINKER PANEEL: Huidige Status */}
+        {/* LEFT PANEL: Current Status */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-500 mb-4">
-            Huidige Pod Status
-          </h2>
-
-          <div
-            className={`${bgColor} text-white text-5xl font-black py-12 px-6 rounded-xl text-center shadow-inner transition-colors duration-500`}
-          >
+          <h2 className="text-2xl font-bold text-gray-500 mb-4">Huidige Pod Status</h2>
+          <div className={`${bgColor} text-white text-5xl font-black py-12 px-6 rounded-xl text-center shadow-inner transition-colors duration-500`}>
             {pod.status.toUpperCase()}
           </div>
-
+          
           <div className="mt-8 grid grid-cols-2 gap-4 text-lg">
             <div className="bg-gray-100 p-4 rounded-lg">
-              <span className="block text-sm text-gray-500">LED Kleur</span>
-              <span className="font-bold">{pod.ledLights}</span>
+              <span className="block text-sm text-gray-500">Radar Detectie</span>
+              <span className="font-bold">{pod.PresenceDetected ? "🟢 Actief" : "⚪ Niemand gezien"}</span>
             </div>
-
             <div className="bg-gray-100 p-4 rounded-lg">
-              <span className="block text-sm text-gray-500">Blauwe LED</span>
-              <span className="font-bold">
-                {pod.blueLedOn ? "🔵 Aan" : "⚪ Uit"}
-              </span>
-            </div>
-
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <span className="block text-sm text-gray-500">Gestart door</span>
-              <span className="font-bold">
-                {pod.sessionStartedBy ?? "—"}
-              </span>
-            </div>
-
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <span className="block text-sm text-gray-500">Toegangscode</span>
-              <span className="font-bold">{pod.accessCode ?? "—"}</span>
+              <span className="block text-sm text-gray-500">Fysieke Knop</span>
+              <span className="font-bold">{pod.ButtonPressed ? "🔘 Ingedrukt!" : "⚪ Wachten..."}</span>
             </div>
           </div>
         </div>
 
-        {/* RECHTER PANEEL: Live Event Logboek */}
+        {/* RIGHT PANEL: Live Event Log */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 flex flex-col">
-          <h2 className="text-2xl font-bold text-gray-500 mb-4">
-            Live Gebeurtenissen (Laatste 10)
-          </h2>
-
-          <div className="flex-1 bg-gray-900 rounded-xl p-4 overflow-hidden">
+          <h2 className="text-2xl font-bold text-gray-500 mb-4">Live Gebeurtenissen (Laatste 15)</h2>
+          <div className="flex-1 bg-gray-900 rounded-xl p-4 overflow-hidden min-h-[300px]">
             {eventLogs.length === 0 ? (
-              <p className="text-gray-400 italic font-mono">
-                Wachten op systeem events...
-              </p>
+              <p className="text-gray-400 italic font-mono">Wachten op systeem events...</p>
             ) : (
               <ul className="space-y-3 font-mono text-sm">
                 {eventLogs.map((log, index) => (
