@@ -16,21 +16,22 @@ export default function AboutPage() {
         <h2 className="text-2xl font-bold text-[#00334E] mb-6">
           Welcome to Parent Pod
         </h2>
-
-        <div className="space-y-6 text-[#4A4A4A] text-[15px] leading-relaxed">
+      <div className="space-y-6 text-[#4A4A4A] text-[15px] leading-relaxed">
           <p>
             Parent Pod is a dedicated space designed for parents who need a quiet, comfortable, and private environment while they're out and about.
           </p>
           <p>
             Designed to offer comfort and privacy, our pods provide a quiet space to pause, recharge, and take a moment away from the hospital environment.
           </p>
-
-          <div>
-            <h3 className="font-bold text-lg text-[#00334E] mb-2">Our Mission</h3>
-            <p>
-              To support parents by providing accessible, convenient, and comfortable spaces that make parenting on-the-go easier and more enjoyable.
-            </p>
-          </div>
+          <p>Developed in collaboration with me+ movement, an initiative founded by Tineke, Parent Pod is part of a broader effort to support parents during emotionally demanding moments.
+Learn more at: <a 
+  href="https://www.me-movement.com/" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  className="text-blue-600 underline hover:text-blue-800"
+>
+  me-movement.com
+</a>.</p>
 
           <div>
             <h3 className="font-bold text-lg text-[#00334E] mb-3">Features</h3>
